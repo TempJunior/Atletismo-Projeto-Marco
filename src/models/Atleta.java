@@ -7,11 +7,11 @@ import java.util.Objects;
 public class Atleta {
     private String nome;
     private Enum<PaisesValidos> pais;
-    private char sexo;
+    private Enum<SexoPermitido> sexo;
     private int idade;
     private double melhorTempo;
 
-    public Atleta(String nome, Enum<PaisesValidos> pais,char sexo, int idade, double melhorTempo) {
+    public Atleta(String nome, Enum<PaisesValidos> pais,Enum<SexoPermitido> sexo, int idade, double melhorTempo) {
         this.nome = nome;
         this.pais = pais;
         this.sexo = sexo;

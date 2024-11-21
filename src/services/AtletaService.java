@@ -3,6 +3,7 @@ package services;
 import exceptionsValidation.ValidaIdadeException;
 import models.Atleta;
 import models.PaisesValidos;
+import models.SexoPermitido;
 
 import java.util.*;
 
@@ -10,7 +11,7 @@ public class AtletaService {
     private Scanner leitura = new Scanner(System.in);
     private List<Atleta> listaDeAtletas = new ArrayList<>();
 
-    private Atleta criaAtleta(String nome, Enum<PaisesValidos> pais, char sexo, int idade, double melhorTempo) {
+    private Atleta criaAtleta(String nome, Enum<PaisesValidos> pais, Enum<SexoPermitido> sexo, int idade, double melhorTempo) {
         return new Atleta(nome, pais, sexo, idade, melhorTempo);
     }
 
@@ -136,17 +137,19 @@ public class AtletaService {
         return idade;
     }
 
-    private char sexo() {
-        String sexo = "";
-        try {
-            System.out.println("Digite o sexo do Atleta: 'M' OU 'F' ");
-            sexo = leitura.nextLine();
+    private Enum<SexoPermitido> sexo() {
+        SexoPermitido sexoEscolhido = null;
+        while (sexoEscolhido == null) {
+            System.out.print("Escolha um sexo ('F', 'FEMININO' OU 'M', 'MASCULINO'): ");
+            String input = leitura.nextLine().toUpperCase();
 
-        } catch (IllegalArgumentException e) {
-            System.out.println("Valor invalido, digite apenas 'M' ou 'F' ");
+            try {
+                sexoEscolhido = SexoPermitido.valueOf(input);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Sexo inválido. Por favor, tente novamente.");
+            }
         }
-
-        return sexo.charAt(0);
+        return sexoEscolhido;
     }
 
     private double melhorTempo() {
