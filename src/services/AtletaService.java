@@ -11,8 +11,8 @@ public class AtletaService {
     private Scanner leitura = new Scanner(System.in);
     private List<Atleta> listaDeAtletas = new ArrayList<>();
 
-    private Atleta criaAtleta(String nome, Enum<PaisesValidos> pais, Enum<SexoPermitido> sexo, int idade, double melhorTempo) {
-        return new Atleta(nome, pais, sexo, idade, melhorTempo);
+    private Atleta criaAtleta(String nome, Enum<PaisesValidos> pais, Enum<SexoPermitido> sexo, int idade, double melhorTempo, String carteirinha) {
+        return new Atleta(nome, pais, sexo, idade, melhorTempo, carteirinha);
     }
 
     public void exibeMenu() {
@@ -38,6 +38,10 @@ public class AtletaService {
                     atletaMaisRapidoEPaisVencedor();
                     break;
                 case 4:
+                    System.out.println("Excluir um usuario pelo numero de registro da carteirinha: ");
+                    excluiAtleta();
+                    break;
+                case 5:
                     System.out.println("Saindo do sistema...");
                     continuar = false;
                     break;
@@ -58,13 +62,60 @@ public class AtletaService {
         System.out.println("================");
     }
 
-    private void atletaMaisRapidoEPaisVencedor(){
-        List<Atleta> listaColetada = Collections.singletonList(listaDeAtletas.stream()
-                .sorted(Comparator.comparing(Atleta::getMelhorTempo))
-                .toList()
-                .getFirst());
+    public void excluiAtleta(){
+        boolean atletaEncontrado = false;
 
-        listaColetada.forEach(System.out::println);
+        while(!atletaEncontrado) {
+            System.out.println("Qual o número da carteirinha que deseja excluir?");
+            String numeroCarteirinha = leitura.nextLine();
+
+            if(numeroCarteirinha.isEmpty()){
+                numeroCarteirinha = leitura.nextLine();
+            }
+
+            Iterator<Atleta> iterator = listaDeAtletas.iterator();
+
+            while (iterator.hasNext()) {
+                Atleta atleta = iterator.next();
+                if (atleta.getCarteiraDeCadastro().equals(numeroCarteirinha)) {
+                    iterator.remove();
+                    atletaEncontrado = true;
+                    System.out.println("Atleta excluído com sucesso!");
+                    break; // Continua no loop para não interromper a execução do menu
+                }
+            }
+
+            if (!atletaEncontrado) {
+                System.out.println("Não existe essa carteirinha.");
+            }
+        }
+    }
+
+    public static String geraNumeroDaCarteiraDoAtleta(int n) {
+        Random random = new Random();
+        StringBuilder sequencia = new StringBuilder();
+
+        for (int i = 0; i < n; i++) {
+            int numero = random.nextInt(10); // Gera um número entre 0 e 9
+            sequencia.append(numero);
+        }
+
+        return sequencia.toString();
+    }
+
+    private void atletaMaisRapidoEPaisVencedor(){
+        try{
+            List<Atleta> listaColetada = Collections.singletonList(listaDeAtletas.stream()
+                    .sorted(Comparator.comparing(Atleta::getMelhorTempo))
+                    .toList()
+                    .getFirst());
+
+            listaColetada.forEach(System.out::println);
+
+        }catch (NoSuchElementException e){
+            System.out.println("Nenhum atleta cadastrado. ");
+        }
+
     }
 
     private List<Atleta> todosAtletasCadastrados() {
@@ -78,8 +129,9 @@ public class AtletaService {
 
 
     private void cadastraNovoAtleta() {
+        String carteirinha = geraNumeroDaCarteiraDoAtleta(6);
         try {
-            Atleta atletas = criaAtleta(cadastraNomeAtleta(), cadastraPais(), sexo(), cadastraIdade(), melhorTempo());
+            Atleta atletas = criaAtleta(cadastraNomeAtleta(), cadastraPais(), sexo(), cadastraIdade(), melhorTempo(), carteirinha);
             listaDeAtletas.add(atletas);
             System.out.println("Atleta cadastrado com sucesso! ");
         } catch (Exception e) {

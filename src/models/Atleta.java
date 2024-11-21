@@ -10,13 +10,15 @@ public class Atleta {
     private Enum<SexoPermitido> sexo;
     private int idade;
     private double melhorTempo;
+    private String carteiraDeCadastro;
 
-    public Atleta(String nome, Enum<PaisesValidos> pais,Enum<SexoPermitido> sexo, int idade, double melhorTempo) {
+    public Atleta(String nome, Enum<PaisesValidos> pais,Enum<SexoPermitido> sexo, int idade, double melhorTempo, String carteiraDeCadastro) {
         this.nome = nome;
         this.pais = pais;
         this.sexo = sexo;
         this.idade = idade;
         this.melhorTempo = melhorTempo;
+        this.carteiraDeCadastro = carteiraDeCadastro;
     }
 
     public String getNome() {
@@ -35,13 +37,19 @@ public class Atleta {
         return melhorTempo;
     }
 
+    public String getCarteiraDeCadastro() {
+        return carteiraDeCadastro;
+    }
+
     @Override
     public String toString() {
         return "Atleta{" +
                 "nome='" + nome + '\'' +
-                ", pais='" + pais + '\'' +
+                ", pais=" + pais +
+                ", sexo=" + sexo +
                 ", idade=" + idade +
                 ", melhorTempo=" + melhorTempo +
+                ", carteiraDeCadastro='" + carteiraDeCadastro + '\'' +
                 '}';
     }
 
