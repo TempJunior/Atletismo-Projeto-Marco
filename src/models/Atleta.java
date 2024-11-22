@@ -6,13 +6,13 @@ import java.util.Objects;
 
 public class Atleta {
     private String nome;
-    private Enum<PaisesValidos> pais;
-    private Enum<SexoPermitido> sexo;
+    private String pais;
+    private String sexo;
     private int idade;
     private double melhorTempo;
     private String carteiraDeCadastro;
 
-    public Atleta(String nome, Enum<PaisesValidos> pais,Enum<SexoPermitido> sexo, int idade, double melhorTempo, String carteiraDeCadastro) {
+    public Atleta(String nome, String pais,String sexo, int idade, double melhorTempo, String carteiraDeCadastro) {
         this.nome = nome;
         this.pais = pais;
         this.sexo = sexo;
@@ -25,7 +25,7 @@ public class Atleta {
         return nome;
     }
 
-    public Enum<PaisesValidos> getPais() {
+    public String getPais() {
         return pais;
     }
 
