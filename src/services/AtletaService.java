@@ -15,62 +15,18 @@ public class AtletaService {
 
     private ConnectionFactory connection;
 
+    //Metodo construtor de AtletaService para fazer conexão com ConnectionFactory
     public AtletaService(){
         this.connection = new ConnectionFactory();
     }
     private Scanner leitura = new Scanner(System.in);
     private List<Atleta> listaDeAtletas = new ArrayList<>();
 
+    @Deprecated
     private Atleta criaAtleta(String nome, String pais, String sexo, int idade, double melhorTempo, String carteirinha) {
         return new Atleta(nome, pais, sexo, idade, melhorTempo, carteirinha);
     }
 
-    public void exibeMenu() {
-        Scanner scanner = new Scanner(System.in);
-        boolean continuar = true;
-
-        while (continuar) {
-            exibirMenu();
-            System.out.print("Escolha uma opção: ");
-            int opcao = scanner.nextInt();
-
-            switch (opcao) {
-                case 1:
-                    System.out.println("Opção 1: Cadastrar novo Atleta.");
-                    cadastraNovoAtleta();
-                    break;
-                case 2:
-                    System.out.println("Opção 2: Exibir todos atletas cadastrados.");
-                    todosAtletasCadastrados();
-                    break;
-                case 3:
-                    System.out.println("Opção 3: Exibir atleta mais rapido e do país vencedor. ");
-                    atletaMaisRapidoEPaisVencedor();
-                    break;
-                case 4:
-                    System.out.println("Excluir um usuario pelo numero de registro da carteirinha: ");
-                    excluiAtleta();
-                    break;
-                case 5:
-                    System.out.println("Saindo do sistema...");
-                    continuar = false;
-                    break;
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
-                    break;
-            }
-        }
-
-    }
-
-    private static void exibirMenu() {
-        System.out.println("===== MENU =====");
-        System.out.println("1. Cadastrar novo Atleta. ");
-        System.out.println("2. Exibir todos atletas cadastrados. ");
-        System.out.println("3. Exibir atleta mais rapido e do país vencedor. ");
-        System.out.println("4. Sair");
-        System.out.println("================");
-    }
 
     public void excluiAtleta(){
         boolean atletaEncontrado = false;
@@ -113,7 +69,7 @@ public class AtletaService {
         return sequencia.toString();
     }
 
-    private void atletaMaisRapidoEPaisVencedor(){
+    public void atletaMaisRapidoEPaisVencedor(){
         try{
             List<Atleta> listaColetada = Collections.singletonList(listaDeAtletas.stream()
                     .sorted(Comparator.comparing(Atleta::getMelhorTempo))
@@ -128,7 +84,7 @@ public class AtletaService {
 
     }
 
-    private List<Atleta> todosAtletasCadastrados() {
+    public List<Atleta> todosAtletasCadastrados() {
         if (listaDeAtletas.isEmpty()) {
             System.out.println("A lista está vazia! Nenhum atleta está cadastrado.");
         } else {
@@ -138,7 +94,7 @@ public class AtletaService {
     }
 
 
-    private void cadastraNovoAtleta() {
+    public void cadastraNovoAtleta() {
 
         String sql = "INSERT INTO atleta (carteiraDeCadastro, nome, pais, sexo, idade, melhorTempo)" +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -180,6 +136,7 @@ public class AtletaService {
         return nome;
     }
 
+    //Metodo para fazer o CASTING do Enum<PaisesValidos> para String
     public static String paisToString(PaisesValidos pais) {
         return pais != null ? pais.name() : null;
     }
@@ -219,6 +176,7 @@ public class AtletaService {
         return idade;
     }
 
+    //Metodo para fazer o CASTING do Enum<SexoPermitido> para String
     public static String sexoToString(SexoPermitido sexo) {
         return sexo != null ? sexo.name() : null;
     }
