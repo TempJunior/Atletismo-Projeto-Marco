@@ -37,6 +37,10 @@ public class Application {
                     aplication.excluiAtleta();
                     break;
                 case 5:
+                    System.out.println("Buscar atleta por numero da carteirinha: ");
+                    aplication.buscaAtletaPorCarteirinha();
+                    break;
+                case 6:
                     System.out.println("Saindo do sistema...");
                     continuar = false;
                     break;
@@ -53,7 +57,9 @@ public class Application {
         System.out.println("1. Cadastrar novo Atleta. ");
         System.out.println("2. Exibir todos atletas cadastrados. ");
         System.out.println("3. Exibir atleta mais rapido e do país vencedor. ");
-        System.out.println("4. Sair");
+        System.out.println("4. Excluir usuario pelo numero de registro na carteirinha. ");
+        System.out.println("5. Buscar por numero da carteirinha. ");
+        System.out.println("6. Sair do programa. ");
         System.out.println("================");
     }
 }

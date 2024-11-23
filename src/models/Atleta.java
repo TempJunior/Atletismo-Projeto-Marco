@@ -1,7 +1,5 @@
 package models;
 
-import services.AtletaService;
-
 import java.util.Objects;
 
 public class Atleta {

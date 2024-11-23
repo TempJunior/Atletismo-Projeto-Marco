@@ -7,13 +7,12 @@ import models.PaisesValidos;
 import models.SexoPermitido;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.*;
 
 public class AtletaService {
 
     private ConnectionFactory connection;
+
 
     //Metodo construtor de AtletaService para fazer conexão com ConnectionFactory
     public AtletaService(){
@@ -85,44 +84,41 @@ public class AtletaService {
     }
 
     public List<Atleta> todosAtletasCadastrados() {
-        if (listaDeAtletas.isEmpty()) {
-            System.out.println("A lista está vazia! Nenhum atleta está cadastrado.");
-        } else {
-            listaDeAtletas.forEach(System.out::println);
+        Connection conn = connection.recuperaConection();
+        AtletaDAO conexao = new AtletaDAO(conn);
+
+        List<Atleta> atletas = conexao.lista();
+
+        atletas.forEach(System.out::println);
+
+        if(atletas.isEmpty()){
+            System.out.println("Lista de atletas vazia! Não existe nenhum atleta cadastrado. ");
         }
-        return new ArrayList<>(listaDeAtletas);
+        return atletas;
     }
 
+    public Atleta buscaAtletaPorCarteirinha(){
+        Connection conn = connection.recuperaConection();
+        AtletaDAO conexao = new AtletaDAO(conn);
+
+        System.out.println("Qual o numero da carteirinha? ");
+        String numeroCarteirinha = leitura.nextLine();
+
+        Atleta atleta = conexao.retornaUmAtletaPorNumeroDaCarteirinha(numeroCarteirinha);
+
+        System.out.println(atleta);
+
+        return atleta;
+    }
 
     public void cadastraNovoAtleta() {
-
-        String sql = "INSERT INTO atleta (carteiraDeCadastro, nome, pais, sexo, idade, melhorTempo)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-
-        String carteirinha = geraNumeroDaCarteiraDoAtleta(6);
-
         Connection conn = connection.recuperaConection();
 
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-
-            preparedStatement.setString(1, carteirinha);
-            preparedStatement.setString(2,cadastraNomeAtleta());
-            preparedStatement.setString(3, cadastraPais());
-            preparedStatement.setString(4, sexo());
-            preparedStatement.setInt(5, cadastraIdade());
-            preparedStatement.setDouble(6, melhorTempo());
-
-            preparedStatement.execute();
-
-            System.out.println("Atleta cadastrado com sucesso! ");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        new AtletaDAO(conn).salvaNovoAtletaNoBanco();
     }
     
 
-    private String cadastraNomeAtleta() {
+    public String cadastraNomeAtleta() {
         String nome = "";
         try {
             System.out.println("Qual o nome do atleta? ");
@@ -141,7 +137,7 @@ public class AtletaService {
         return pais != null ? pais.name() : null;
     }
 
-    private String cadastraPais() {
+    public String cadastraPais() {
         PaisesValidos paisEscolhido = null;
         while (paisEscolhido == null) {
             System.out.print("Escolha um país (MEX, USA, CAN): ");
@@ -156,7 +152,7 @@ public class AtletaService {
         return paisToString(paisEscolhido);
     }
 
-    private int cadastraIdade() {
+    public int cadastraIdade() {
         int idade = 0;
         boolean idadeVerdadeira = false;
         do {
@@ -181,7 +177,7 @@ public class AtletaService {
         return sexo != null ? sexo.name() : null;
     }
 
-    private String sexo() {
+    public String sexo() {
         SexoPermitido sexoEscolhido = null;
         while (sexoEscolhido == null) {
             System.out.print("Escolha um sexo ('F', 'FEMININO' OU 'M', 'MASCULINO'): ");
@@ -196,7 +192,7 @@ public class AtletaService {
         return sexoToString(sexoEscolhido);
     }
 
-    private double melhorTempo() {
+    public double melhorTempo() {
         System.out.println("Qual o melhor tempo do atleta? ");
         double tempo = leitura.nextDouble();
 
