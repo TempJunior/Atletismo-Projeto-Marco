@@ -80,32 +80,28 @@ public class AtletaDAO {
         return atletas;
     }
 
-    public Atleta retornaUmAtletaPorNumeroDaCarteirinha(String numeroCarteirinha){
+    public Atleta retornaUmAtletaPorNumeroDaCarteirinha(String numeroCarteirinha) {
         Atleta atleta = null;
-
-        PreparedStatement ps;
-        ResultSet resultSet;
-
-        String sql = "SELECT * FROM atleta WHERE carteiraDeCadastro = '" + numeroCarteirinha+ "'";
+        String sql = "SELECT * FROM atleta WHERE carteiraDeCadastro = ?"; // Verifique se o nome da coluna está correto
 
         try {
-            ps = conn.prepareStatement(sql);
-            resultSet = ps.executeQuery();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, numeroCarteirinha);
+            ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
-                String carteirinha = resultSet.getString(1);
-                String nome = resultSet.getString(2);
-                String pais = resultSet.getString(3);
-                String sexo = resultSet.getString(4);
-                Integer idade = resultSet.getInt(5);
-                Double melhorTempo = resultSet.getDouble(6);
+            if (resultSet.next()) {
+                String carteirinha = resultSet.getString("carteiraDeCadastro"); // Use nomes de colunas
+                String nome = resultSet.getString("nome");
+                String pais = resultSet.getString("pais");
+                String sexo = resultSet.getString("sexo");
+                Integer idade = resultSet.getInt("idade");
+                Double melhorTempo = resultSet.getDouble("melhorTempo");
 
                 atleta = new Atleta(nome, pais, sexo, idade, melhorTempo, carteirinha);
-
-
             }
-            ps.close();
+
             resultSet.close();
+            ps.close();
             conn.close();
 
         } catch (SQLException e) {
@@ -114,4 +110,5 @@ public class AtletaDAO {
 
         return atleta;
     }
+
 }
