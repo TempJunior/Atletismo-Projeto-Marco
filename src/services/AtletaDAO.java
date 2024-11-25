@@ -111,4 +111,21 @@ public class AtletaDAO {
         return atleta;
     }
 
+    public void exclui(String numeroCarteirinha){
+        String sql = "DELETE FROM atleta WHERE carteiraDeCadastro = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, numeroCarteirinha);
+            ps.execute();
+
+            System.out.println("Conta excluida com sucesso! ");
+
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

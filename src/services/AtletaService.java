@@ -27,6 +27,17 @@ public class AtletaService {
     }
 
 
+    public void excluirAtletaDoBanco(){
+        System.out.println("Qual o numero da carteirinha? ");
+        String numeroCarteirinha = leitura.nextLine();
+
+        Connection conn = connection.recuperaConection();
+        AtletaDAO conexao = new AtletaDAO(conn);
+
+        conexao.exclui(numeroCarteirinha);
+    }
+
+    @Deprecated
     public void excluiAtleta(){
         boolean atletaEncontrado = false;
 
@@ -75,6 +86,7 @@ public class AtletaService {
                     .toList()
                     .getFirst());
 
+
             listaColetada.forEach(System.out::println);
 
         }catch (NoSuchElementException e){
@@ -88,6 +100,8 @@ public class AtletaService {
         AtletaDAO conexao = new AtletaDAO(conn);
 
         List<Atleta> atletas = conexao.lista();
+
+        listaDeAtletas = atletas;
 
         atletas.forEach(System.out::println);
 

@@ -34,7 +34,7 @@ public class Application {
                     break;
                 case 4:
                     System.out.println("Excluir um usuario pelo numero de registro da carteirinha: ");
-                    aplication.excluiAtleta();
+                    aplication.excluirAtletaDoBanco();
                     break;
                 case 5:
                     System.out.println("Buscar atleta por numero da carteirinha: ");
